@@ -10,12 +10,13 @@ class AccountController extends Controller
 
     public function balance(Request $request)
     {
-        $account = Account::find($request->account_id);
+        $account_id = $request->query('account_id');
+        $account = Account::find($account_id);
 
         if (!$account) {
-            return response()->json(['message' => '0'], 404);
+            return response()->json(['404' => '0'], 404);
         }
-        return response()->json(['message' => $account->balance], 200);
+        return response()->json(['200' => $account->balance], 200);
     }
 
     /**
