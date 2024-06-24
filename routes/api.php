@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\GeneralApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,3 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/reset', [GeneralApiController::class, 'reset']);
+
+//Account routes
+Route::get('/balance/{account_id}', [AccountController::class, 'getBalance']);
+Route::post('/event', [AccountController::class, 'eventOnAccount']);

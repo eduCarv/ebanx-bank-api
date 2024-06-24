@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use Illuminate\Http\Request;
 
 class GeneralApiController extends Controller
 {
-    public function reset(){
-        //Reseta o banco de dados 
-        return  response(200);
+    
+    public function reset()
+    {
+        Account::truncate();
+        return response()->json(['message' => 'OK'], 200);
     }
 }
