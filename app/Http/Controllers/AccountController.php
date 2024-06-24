@@ -14,9 +14,9 @@ class AccountController extends Controller
         $account = Account::find($account_id);
 
         if (!$account) {
-            return response()->json(['404' => '0'], 404);
+            return response('0', 404);
         }
-        return response()->json(['200' => $account->balance], 200);
+        return response()->json($account->balance, 200);
     }
 
     /**
@@ -29,7 +29,7 @@ class AccountController extends Controller
     {
         switch ($request->type) {
             case 'deposit':
-                
+
                 $account = Account::find($request->destination);
 
                 if (!$account) {
@@ -37,18 +37,61 @@ class AccountController extends Controller
                         'id' => $request->destination,
                         'balance' => $request->amount
                     ]);
-                    return response()->json(['201' => ['destination' => ['id' => $request->destination, 'balance' => $request->amount]]], 201);
+                    return response()->json(['destination' => ['id' => $request->destination, 'balance' => $request->amount]], 201);
                 } else {
                     $account->balance += $request->amount;
                     $account->save();
-                    return response()->json(['200' => ['destination' => ['id' => $request->destination, 'balance' => $account->balance]]], 200);
+                    return response()->json(['destination' => ['id' => $request->destination, 'balance' => $account->balance]], 201);
                 }
                 break;
             case 'withdraw':
-                # code...
+                $account = Account::find($request->origin);
+
+                if (!$account) {
+                    return response('0', 404);
+                } else {
+                    $account->balance -= $request->amount;
+                    $account->save();
+                    return response()->json(['origin' => ['id' => $request->origin, 'balance' => $account->balance]], 201);
+                }
                 break;
             case 'transfer':
-                # code...
+                /*
+                 	"type": "transfer",
+	                "origin": "100",
+	                "amount": 15,
+	                "destination": "300"
+                 */
+                $originAccount = Account::find($request->origin);
+
+                if (!$originAccount) {
+                    return response('0', 404);
+                } else {
+
+                    //here should certify that the account have the amount requested but i will not implement by now.
+                    $originAccount->balance -= $request->amount;
+                    $originAccount->save();
+
+                    $destinationAccount = Account::find($request->destination);
+
+                    //Here i will create a new account for destination if doesn't exist
+                    if (!$destinationAccount) {
+                        Account::create([
+                            'id' => $request->destination,
+                            'balance' => 0
+                        ]);
+                        $destinationAccount = Account::find($request->destination);
+                    }
+
+                    $destinationAccount->balance += $request->amount;
+                    $destinationAccount->save();
+
+                    return response()->json([
+                        'origin' => ['id' => (string) $originAccount->id, 'balance' => $originAccount->balance],
+                        'destination' => ['id' => (string) $destinationAccount->id, 'balance' => $destinationAccount->balance]
+                    ], 201);
+                }
+
                 break;
 
             default:

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\GeneralApiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::post('/reset', [GeneralApiController::class, 'reset']);
+
+//Account routes
+Route::get('/balance', [AccountController::class, 'balance']);
+Route::post('/event', [AccountController::class, 'event']);
