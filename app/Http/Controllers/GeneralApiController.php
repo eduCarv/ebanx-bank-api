@@ -11,6 +11,6 @@ class GeneralApiController extends Controller
     public function reset()
     {
         Account::truncate();
-        return response()->json(['message' => 'OK'], 200);
+        return response()->json(['200' => 'OK']);
     }
 }

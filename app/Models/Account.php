@@ -9,5 +9,9 @@ class Account extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['balance'];
+    protected $fillable = ['id', 'balance'];
+
+    public $incrementing = false;
+
+    protected $keyType = 'string';
 }

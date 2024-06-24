@@ -19,5 +19,5 @@ use Illuminate\Support\Facades\Route;
 Route::post('/reset', [GeneralApiController::class, 'reset']);
 
 //Account routes
-Route::get('/balance/{account_id}', [AccountController::class, 'getBalance']);
-Route::post('/event', [AccountController::class, 'eventOnAccount']);
+Route::get('/balance/{account_id}', [AccountController::class, 'balance']);
+Route::post('/event', [AccountController::class, 'event']);
