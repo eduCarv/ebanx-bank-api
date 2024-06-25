@@ -63,3 +63,5 @@ POST /event {"type":"transfer", "origin":"200", "amount":15, "destination":"300"
 ---
 Api published using ngrok
 
+\*** Need change DB_DATABASE to your path for database.sqlite to work properly \***
+
